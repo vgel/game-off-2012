@@ -21,10 +21,33 @@ Level.prototype.draw = function(drawctx, basex, basey, screenwidth, screenheight
 
 Level.prototype.getTileAt = function(x, y) {
 	for (var i = 0; i < this.tiles.length; i++) {
-		if (this.tiles[i].x == x && this.tiles[i].y == y)
+		if (this.tiles[i].x === x && this.tiles[i].y === y)
 			return this.tiles[i]
 	}
 	return null
+}
+
+function Point(x, y) {
+	this.x = x
+	this.y = y
+}
+
+function Entity(level, drawctx, x, y, width, height, xacc, yacc) {
+	xacc = defaultarg(xacc, 0)
+	yacc = defaultarg(yacc, 0)
+
+	this.level = level
+	this.drawctx = drawctx
+	this.pos = new Point(x, y) //upper-left
+	this.width = width
+	this.height = height
+	this.acc = new Point(xacc, yacc)
+}
+
+Entity.prototype.moveto = function(x, y) {
+	if (x === this.x && y === this.y)
+		return
+	
 }
 
 function Engine(context, width, height) {
@@ -33,6 +56,7 @@ function Engine(context, width, height) {
 	this.height = height
 	this.entityList = []
 	this.level = new Level(this, this.width, this.height, null, level_data)
+
 }
 
 Engine.prototype.draw = function() {
