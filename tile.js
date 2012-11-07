@@ -17,7 +17,7 @@ Tile.prototype.clips = function(x, y, tile_width, tile_height) {
 
 Tile.prototype.drawShadow = function(drawctx) {
 	drawctx.fillStyle = "rgba(10, 10, 10, 0.4)"
-	if (this.bottom() == null && this.bottomleft() != null)
+	if (this.bottom() === null && this.bottomleft() !== null)
 		drawctx.fillRect(this.x - 4, this.y - 4, tile_width, tile_width + 4)
 	else
 		drawctx.fillRect(this.x - 4, this.y - 4, tile_width, tile_width)
