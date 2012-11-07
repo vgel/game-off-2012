@@ -68,8 +68,42 @@ function pointInRect(x, y, width, height, px, py) {
 function rectanglesClip(x1, y1, width1, height1, x2, y2, width2, height2) {
 	uy = y1 + height1
 	rx = x1 + width1
-	return pointInRect(x1, y1, width1, height1, x2,		  y2) ||
-		   pointInRect(x1, y1, width1, height1, x2 + width2, y2) ||
-		   pointInRect(x1, y1, width1, height1, x2,		  y2 + height2) ||
-		   pointInRect(x1, y2, width1. height1, x2 + width2, y2 + height2)
+	return pointInRect(x1, y1, width1, height1, x2, y2) ||
+	       pointInRect(x1, y1, width1, height1, x2 + width2, y2) ||
+	       pointInRect(x1, y1, width1, height1, x2, y2 + height2) ||
+	       pointInRect(x1, y2, width1. height1, x2 + width2, y2 + height2)
+}
+
+function defaultarg(arg, default_) {
+	if (typeof(arg) === 'undefined')
+		return default_
+	return arg
+}
+
+function intersectLine(a1, a2, b1, b2) {
+	var ua_t = (b2.x - b1.x) * (a1.y - b1.y) - (b2.y - b1.y) * (a1.x - b1.x)
+	var ub_t = (a2.x - a1.x) * (a1.y - b1.y) - (a2.y - a1.y) * (a1.x - b1.x)
+	var u_b  = (b2.y - b1.y) * (a2.x - a1.x) - (b2.x - b1.x) * (a2.y - a1.y)
+
+	if (u_b != 0) {
+		var ua = ua_t / u_b
+		var ub = ub_t / u_b
+
+		if (0 <= ua && ua <= 1 && 0 <= ub && ub <= 1)
+			return new Point(a1.x + ua * (a2.x - a1.x), a1.y + ua * (a2.y - a1.y))
+		else
+			return null
+	} else {
+		if (ua_t == 0 || ub_t == 0)
+			return new Point(x, y) //coincident
+		else
+			return null //paralell
+	}
+}
+
+function drawLine(drawctx, start, end) {
+	drawctx.beginPath()
+	drawctx.moveTo(start.x, start.y)
+	drawctx.lineTo(end.x, end.y)
+	drawctx.stroke()
 }
